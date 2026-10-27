@@ -15,7 +15,7 @@ static constexpr bn::fixed MIN_X = -HALF_SCREEN_WIDTH;
 static constexpr bn::fixed MAX_X = HALF_SCREEN_WIDTH;
 static constexpr int HALF_SCREEN_HEIGHT=bn::display::height()/2;
 static constexpr bn::fixed MIN_Y=-HALF_SCREEN_HEIGHT;
-static constexpr  bn::fixed MAX_Y=HALF_SCREEN_WIDTH;
+static constexpr  bn::fixed MAX_Y=HALF_SCREEN_HEIGHT;
 // Starting speed of a bouncer
 static constexpr bn::fixed BASE_SPEED = 2;
 
@@ -27,17 +27,21 @@ class Bouncer
 public:
     bn::sprite_ptr sprite;
     bn::fixed x_speed;
+    bn::fixed y_speed;
 
-    Bouncer(bn::fixed x_start, bn::fixed y_start) : sprite(bn::sprite_items::dot.create_sprite(x_start, y_start)), x_speed(BASE_SPEED)
+    Bouncer(bn::fixed x_start, bn::fixed y_start) : sprite(bn::sprite_items::dot.create_sprite(x_start, y_start)), x_speed(BASE_SPEED),y_speed(BASE_SPEED)
     {
     }
     void update()
     {
 
         bn::fixed x = sprite.x();
+        bn::fixed y = sprite.y();
+
 
         // Update x position by adding speed
         x += x_speed;
+        y += y_speed;
 
         // If we've gone off the screen on the right
         if (x > MAX_X)
@@ -46,6 +50,21 @@ public:
             x = MAX_X;
             x_speed *= -1;
         }
+
+
+         if (y > MAX_Y)
+         {
+            y = MAX_Y;
+            y_speed *= -1;
+        }
+
+         if (y < MIN_Y)
+        {
+            
+            y = MIN_Y;
+            y_speed *= -1;
+        }
+
         // If we've gone off the screen on the left
         if (x < MIN_X)
         {
@@ -55,6 +74,7 @@ public:
         }
 
         sprite.set_x(x);
+        sprite.set_y(y);
     }
 
 private:
