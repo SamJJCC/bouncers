@@ -8,6 +8,9 @@
 #include <bn_log.h>
 
 #include "bn_sprite_items_dot.h"
+#include "bn_sprite_items_frog.h"
+
+
 
 // Set max/min x position to be the edges of the display
 static constexpr int HALF_SCREEN_WIDTH = bn::display::width() / 2;
@@ -29,7 +32,7 @@ public:
     bn::fixed x_speed;
     bn::fixed y_speed;
 
-    Bouncer(bn::fixed x_start, bn::fixed y_start, bn::random& rng) : sprite(bn::sprite_items::dot.create_sprite(x_start, y_start)), x_speed(rng.get_int(1,5)),y_speed(rng.get_int(1,5))
+    Bouncer(bn::fixed x_start, bn::fixed y_start, bn::random& rng) : sprite(bn::sprite_items::frog.create_sprite(x_start, y_start)), x_speed(rng.get_int(1,4)),y_speed(rng.get_int(1,4))
     {
     }
     void update()
@@ -124,7 +127,7 @@ int main()
     bn::vector<Bouncer, MAX_BOUNCERS> bouncers = {};
   //Bouncer manual = Bouncer(-30, 25);
     bn::fixed y_spawn=0;
-  
+ // bn::sprite_ptr frog = bn::sprite_items::frog.create_sprite();
 
     while (true)
     {
