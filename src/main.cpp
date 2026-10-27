@@ -29,7 +29,7 @@ public:
     bn::fixed x_speed;
     bn::fixed y_speed;
 
-    Bouncer(bn::fixed x_start, bn::fixed y_start) : sprite(bn::sprite_items::dot.create_sprite(x_start, y_start)), x_speed(BASE_SPEED),y_speed(BASE_SPEED)
+    Bouncer(bn::fixed x_start, bn::fixed y_start, bn::random& rng) : sprite(bn::sprite_items::dot.create_sprite(x_start, y_start)), x_speed(rng.get_int(1,5)),y_speed(rng.get_int(1,5))
     {
     }
     void update()
@@ -100,11 +100,11 @@ bn::fixed average_x(bn::vector<Bouncer, MAX_BOUNCERS>& bouncers)
     return x_average;
 }
 
-void add_bouncer(bn::vector<Bouncer,MAX_BOUNCERS>& bouncers, bn::fixed start_x, bn::fixed start_y){
+void add_bouncer(bn::vector<Bouncer,MAX_BOUNCERS>& bouncers, bn::fixed start_x, bn::fixed start_y, bn::random& rng){
 // Only add if we're below the maximum
         if (bouncers.size() < bouncers.max_size())
         {
-            bouncers.push_back(Bouncer(start_x, start_y));
+            bouncers.push_back(Bouncer(start_x, start_y,rng));
         }
 
 }
@@ -116,7 +116,7 @@ int main()
 {
 
     bn::core::init();
-
+    bn::random rng;
     // Sprites and x speeds of bouncers
     // Items with the same index correspond to each other
     // bn::vector<bn::sprite_ptr, MAX_BOUNCERS> sprites = {};
@@ -131,7 +131,7 @@ int main()
         // if A is pressed add a new bouncer
         if (bn::keypad::a_pressed())
         {
-            add_bouncer(bouncers,0,y_spawn);
+            add_bouncer(bouncers,0,y_spawn,rng);
         }
 
         // if B is pressed print the average to the console
